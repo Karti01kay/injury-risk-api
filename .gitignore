@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+env/
+.venv/
+ 
+# Model artifacts (will be trained on Render startup)
+outputs/injury_model.joblib
+outputs/scaler.joblib
+ 
+# Keep these in git
+# outputs/model_meta.json  ← optional, Render will regenerate it
+ 
+# OS
+.DS_Store
+Thumbs.db

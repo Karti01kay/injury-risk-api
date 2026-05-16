@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: injury-risk-api
+    runtime: python
+    rootDir: api
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ANTHROPIC_API_KEY
+        value: your-anthropic-key-here   # replace or set in Render dashboard
+    autoDeploy: true
