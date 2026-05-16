@@ -6,14 +6,12 @@ __pycache__/
 venv/
 env/
 .venv/
- 
-# Model artifacts (will be trained on Render startup)
-outputs/injury_model.joblib
-outputs/scaler.joblib
- 
-# Keep these in git
-# outputs/model_meta.json  ← optional, Render will regenerate it
- 
+
+# DO NOT ignore model artifacts — they must be committed to the repo
+# outputs/injury_model.joblib  ← keep this in git
+# outputs/scaler.joblib        ← keep this in git
+# outputs/model_meta.json      ← keep this in git
+
 # OS
 .DS_Store
 Thumbs.db

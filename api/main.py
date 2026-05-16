@@ -1,62 +1,28 @@
 """
 Injury Risk Forecaster — FastAPI Backend v2.2
-Render-ready: auto-trains model on first boot if outputs missing.
+Model artifacts are committed to the repo — no training on startup.
 """
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-import logging, time, os, subprocess, sys
+import logging, time, os
+from pathlib import Path
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)s  %(message)s")
 logger = logging.getLogger(__name__)
 
-# ── Resolve all paths relative to this file (api/main.py) ───────────────────
-API_DIR  = os.path.dirname(os.path.abspath(__file__))   # /repo/api
-ROOT_DIR = os.path.dirname(API_DIR)                      # /repo
-OUTPUTS  = os.path.join(API_DIR, "outputs")             # /repo/api/outputs
-
-
-def ensure_model():
-    model_path = os.path.join(OUTPUTS, "injury_model.joblib")
-    if os.path.exists(model_path):
-        logger.info("Model artifacts found — skipping training.")
-        return
-
-    logger.info("No model found — training now (~30s) ...")
-    os.makedirs(OUTPUTS, exist_ok=True)
-
-    # train_model.py lives in repo root, next to api/
-    train_script = os.path.join(ROOT_DIR, "train_model.py")
-    if not os.path.exists(train_script):
-        raise RuntimeError(f"train_model.py not found at {train_script}")
-
-    result = subprocess.run(
-        [sys.executable, train_script],
-        capture_output=True, text=True,
-        cwd=ROOT_DIR,   # run from repo root so it can find data_generator etc.
-        env={**os.environ, "OUTPUTS_DIR": OUTPUTS},  # pass output path
-    )
-    logger.info(result.stdout[-2000:] if result.stdout else "")
-    if result.returncode != 0:
-        logger.error(result.stderr[-2000:])
-        raise RuntimeError("Model training failed — check logs above.")
-    logger.info("Model trained and saved successfully.")
+API_DIR  = os.path.dirname(os.path.abspath(__file__))
+OUTPUTS  = os.path.join(API_DIR, "outputs")
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    ensure_model()
-
-    # Override ARTIFACTS path in AppState before loading
     from models.state import AppState
-    from pathlib import Path
     AppState._artifacts_path = Path(OUTPUTS)
-
     logger.info("Loading ML model artifacts ...")
     AppState.load()
     logger.info(f"Model ready: {AppState.meta['model_type']} (AUC={AppState.meta['test_auc']})")
-
     from services.user_store import seed_admin
     seed_admin()
     logger.info("Startup complete.")

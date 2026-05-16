@@ -1,0 +1,41 @@
+{
+  "model_type": "Gradient Boosting",
+  "features": [
+    "age",
+    "prev_injury",
+    "daily_load",
+    "acute_load_7d",
+    "chronic_load_28d",
+    "acwr",
+    "sleep_hours",
+    "sleep_quality",
+    "sleep_deficit_7d",
+    "resting_hr",
+    "rhr_trend",
+    "soreness",
+    "soreness_7d",
+    "days_since_rest",
+    "is_rest_day",
+    "load_monotony",
+    "training_strain",
+    "load_spike",
+    "acwr_danger",
+    "sport_basketball",
+    "sport_cycling",
+    "sport_football",
+    "sport_running",
+    "sport_swimming"
+  ],
+  "n_features": 24,
+  "test_auc": 0.6481,
+  "test_ap": 0.4057,
+  "test_f1": 0.1764,
+  "cv_auc_mean": 0.6486,
+  "cv_auc_std": 0.0078,
+  "risk_thresholds": {
+    "low": 0.25,
+    "moderate": 0.5,
+    "high": 0.7
+  },
+  "trained_on": "2026-04-18"
+}
