@@ -30,8 +30,15 @@ from sklearn.calibration     import CalibratedClassifierCV
 from data_generator    import generate_dataset
 from feature_engineering import engineer_features, get_feature_columns
 
+import os as _os
+OUT_DIR = _os.environ.get("OUTPUTS_DIR",
+    _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "api", "outputs"))
+_os.makedirs(OUT_DIR, exist_ok=True)
+
+
+
 warnings.filterwarnings("ignore")
-os.makedirs("/home/claude/injury_risk/outputs", exist_ok=True)
+os.makedirs(OUT_DIR, exist_ok=True)
 
 SEED   = 42
 TARGET = "injury_occurred"
@@ -164,7 +171,7 @@ if hasattr(clf, "feature_importances_"):
     ax.grid(axis="x", alpha=0.3)
 
 plt.tight_layout()
-plt.savefig("/home/claude/injury_risk/outputs/model_evaluation.png",
+plt.savefig(OUT_DIR + "/model_evaluation.png",
             dpi=150, bbox_inches="tight")
 plt.close()
 print("       Saved → outputs/model_evaluation.png")
@@ -173,8 +180,8 @@ print("       Saved → outputs/model_evaluation.png")
 # ── 6. Save artefacts ────────────────────────────────────────────────────────
 print("\n[6/6] Saving model artefacts …")
 
-joblib.dump(clf,    "/home/claude/injury_risk/outputs/injury_model.joblib")
-joblib.dump(scaler, "/home/claude/injury_risk/outputs/scaler.joblib")
+joblib.dump(clf,    OUT_DIR + "/injury_model.joblib")
+joblib.dump(scaler, OUT_DIR + "/scaler.joblib")
 
 meta = {
     "model_type":   best_name,
@@ -193,7 +200,7 @@ meta = {
     "trained_on": str(pd.Timestamp.now().date()),
 }
 
-with open("/home/claude/injury_risk/outputs/model_meta.json", "w") as f:
+with open(OUT_DIR + "/model_meta.json", "w") as f:
     json.dump(meta, f, indent=2)
 
 print(f"       injury_model.joblib  ✓")
