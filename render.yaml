@@ -2,10 +2,9 @@ services:
   - type: web
     name: injury-risk-api
     runtime: python
-    rootDir: api
     pythonVersion: "3.11.9"
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    buildCommand: pip install -r api/requirements.txt
+    startCommand: python start.py
     envVars:
       - key: JWT_SECRET
         generateValue: true
