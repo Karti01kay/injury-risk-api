@@ -27,15 +27,15 @@
     "sport_swimming"
   ],
   "n_features": 24,
-  "test_auc": 0.6481,
-  "test_ap": 0.4057,
-  "test_f1": 0.1764,
+  "test_auc": 0.6492,
+  "test_ap": 0.4079,
+  "test_f1": 0.1783,
   "cv_auc_mean": 0.6486,
-  "cv_auc_std": 0.0078,
+  "cv_auc_std": 0.0087,
   "risk_thresholds": {
     "low": 0.25,
     "moderate": 0.5,
     "high": 0.7
   },
-  "trained_on": "2026-04-18"
+  "trained_on": "2026-05-17"
 }
