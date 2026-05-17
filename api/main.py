@@ -13,7 +13,8 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)s  %(me
 logger = logging.getLogger(__name__)
 
 API_DIR  = os.path.dirname(os.path.abspath(__file__))
-OUTPUTS  = os.path.join(API_DIR, "outputs")
+ROOT_DIR = os.path.dirname(API_DIR)
+OUTPUTS  = os.path.join(ROOT_DIR, "outputs")
 
 
 @asynccontextmanager
